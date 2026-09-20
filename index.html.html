@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інтерактивний аркуш: Графічний дизайн, типографіка та реклама (11 клас)</title>
+    <style>
+        :root {
+            --primary: #0057b7;
+            --primary-light: #e6f0fa;
+            --accent: #ffd700;
+            --accent-hover: #ffcc00;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-muted: #6c757d;
+            --border: #e2e8f0;
+            --success: #28a745;
+            --error: #dc3545;
+            --radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 15px;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #003d80);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .student-info {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .student-info input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .student-info input:focus {
+            border-color: var(--primary);
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theory-box {
+            background: var(--primary-light);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+            color: #1a365d;
+            border: 1px solid #c3dafe;
+        }
+
+        .question-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 18px;
+            background: #fff;
+            transition: border-color 0.3s;
+        }
+
+        .question-header {
+            font-weight: 600;
+            font-size: 0.98rem;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .badge {
+            background: var(--accent);
+            color: #000;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        @media(min-width: 500px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .match-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .match-label {
+            font-size: 0.88rem;
+            background: #f1f5f9;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        select.match-select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.88rem;
+            outline: none;
+            background: #fff;
+        }
+
+        .categories-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .category-box {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 80px;
+            background: #fafafa;
+        }
+
+        .category-box h5 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .items-pool {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .chip {
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            border-radius: 16px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .chip.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .fill-blank-select {
+            padding: 4px 8px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin: 0 4px;
+            background: #fff;
+        }
+
+        .seq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .seq-item {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .seq-btns button {
+            background: #e2e8f0;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .next-btn {
+            margin-top: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.88rem;
+        }
+
+        .feedback {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.correct {
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.wrong {
+            color: var(--error);
+            display: block;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .finish-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,87,183,0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .finish-btn:hover {
+            transform: translateY(-2px);
+            background: #004494;
+        }
+
+        /* Екран з підсумками */
+        #result-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.98);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 2px solid var(--primary);
+        }
+
+        .result-card h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            margin: 15px 0;
+            background: var(--primary);
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .verification-code {
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            color: #334155;
+            word-break: break-all;
+            border: 1px dashed var(--primary);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- Модальний екран результатів -->
+    <div id="result-screen">
+        <div class="result-card">
+            <h2>Роботу завершено!</h2>
+            <p>Зробіть скріншот цього екрану та надішліть вчителю.</p>
+            <p id="res-student-name" style="font-weight: bold; margin-top: 10px; font-size: 1.1rem;"></p>
+            <div class="score-display" id="res-score">0 / 12</div>
+            <div class="verification-code" id="res-code"></div>
+        </div>
+    </div>
+
+    <div class="container" id="main-content">
+        <header>
+            <h1>Графічний дизайн, типографіка та реклама</h1>
+            <p>Інтерактивний робочий аркуш | 11 клас (20 хвилин)</p>
+        </header>
+
+        <div class="student-info">
+            <label for="student-name"><b>Учень / Учениця:</b></label>
+            <input type="text" id="student-name" placeholder="Введіть ваше Прізвище та Ім'я" autocomplete="off">
+        </div>
+
+        <!-- РОЗДІЛ 1 -->
+        <div class="section-card">
+            <div class="section-title">Розділ 1: Історія графічної культури та цифрове мистецтво</div>
+            <div class="theory-box">
+                <b>Короткий огляд:</b> Графічний дизайн пройшов шлях від маніфестів Баугауз та Швейцарського стилю до сучасної ери Digital Art (Pixel Art, 3D та генеративний дизайн).
+            </div>
+
+            <!-- 1.1 -->
+            <div class="question-card" id="q1">
+                <div class="question-header">
+                    <span>1.1. Зіставте напрям/стиль дизайну з його характеристикою:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="match-row">
+                    <div class="match-label">Баугауз</div>
+                    <select class="match-select" data-pair="1" onchange="autoCheckMatch('q1', checkQ1, 'q2')">
+                        <option value="">-- Оберіть --</option>
+                        <option value="a">Відмова від декору, пріоритет функціональності</option>
+                        <option value="b">Строгі модульні сітки, шрифт Helvetica</option>
+                        <option value="c">Створення арт-об'єктів за допомогою алгоритмів та ШІ</option>
+                    </select>
+                </div>
+                <div class="match-row">
+                    <div class="match-label">Швейцарський стиль</div>
+                    <select class="match-select" data-pair="2" onchange="autoCheckMatch('q1', checkQ1, 'q2')">
+                        <option value="">-- Оберіть --</option>
+                        <option value="a">Відмова від декору, пріоритет функціональності</option>
+                        <option value="b">Строгі модульні сітки, шрифт Helvetica</option>
+                        <option value="c">Створення арт-об'єктів за допомогою алгоритмів та ШІ</option>
+                    </select>
+                </div>
+                <div class="match-row">
+                    <div class="match-label">Generative Art</div>
+                    <select class="match-select" data-pair="3" onchange="autoCheckMatch('q1', checkQ1, 'q2')">
+                        <option value="">-- Оберіть --</option>
+                        <option value="a">Відмова від декору, пріоритет функціональності</option>
+                        <option value="b">Строгі модульні сітки, шрифт Helvetica</option>
+                        <option value="c">Створення арт-об'єктів за допомогою алгоритмів та ШІ</option>
+                    </select>
+                </div>
+                <div class="feedback" id="fb1"></div>
+            </div>
+
+            <!-- 1.2 -->
+            <div class="question-card" id="q2">
+                <div class="question-header">
+                    <span>1.2. Який вид цифрового мистецтва базується на малюванні зображень на рівні окремих пікселів?</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkQ2(this, false, 'q3')">Vector Art</button>
+                    <button class="option-btn" onclick="checkQ2(this, true, 'q3')">Pixel Art</button>
+                    <button class="option-btn" onclick="checkQ2(this, false, 'q3')">3D Sculpting</button>
+                    <button class="option-btn" onclick="checkQ2(this, false, 'q3')">Concept Art</button>
+                </div>
+                <div class="feedback" id="fb2"></div>
+            </div>
+
+            <!-- 1.3 -->
+            <div class="question-card" id="q3">
+                <div class="question-header">
+                    <span>1.3. Розставте етапи розвитку носіїв графіки в хронологічному порядку:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="seq-list" id="seq1">
+                    <div class="seq-item" data-id="1"><span>Друкарський верстат Гутенберга</span> <div class="seq-btns"><button onclick="moveSeq('seq1', this, -1)">▲</button><button onclick="moveSeq('seq1', this, 1)">▼</button></div></div>
+                    <div class="seq-item" data-id="2"><span>Поява комп'ютерної графіки та GUI</span> <div class="seq-btns"><button onclick="moveSeq('seq1', this, -1)">▲</button><button onclick="moveSeq('seq1', this, 1)">▼</button></div></div>
+                    <div class="seq-item" data-id="3"><span>Інтерактивний UI/UX дизайн вебсайтів</span> <div class="seq-btns"><button onclick="moveSeq('seq1', this, -1)">▲</button><button onclick="moveSeq('seq1', this, 1)">▼</button></div></div>
+                </div>
+                <button class="next-btn" onclick="checkQ3('q4')">Готово ➔</button>
+                <div class="feedback" id="fb3"></div>
+            </div>
+        </div>
+
+        <!-- РОЗДІЛ 2 -->
+        <div class="section-card">
+            <div class="section-title">Розділ 2: Типографіка та шрифтові пари</div>
+            <div class="theory-box">
+                <b>Короткий огляд:</b> <i>Serif</i> (із зарубками) та <i>Sans-Serif</i> (рублені). <b>Каліграфія</b> — красиве рукописне письмо; <b>Леттеринг</b> — малювання літер як ілюстрацій; <b>Типографіка</b> — робота з готовими шрифтами.
+            </div>
+
+            <!-- 2.1 -->
+            <div class="question-card" id="q4">
+                <div class="question-header">
+                    <span>2.1. Розподіліть класичні шрифти за категоріями:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="items-pool" id="pool4">
+                    <div class="chip" data-type="serif" onclick="moveChip(this)">Times New Roman</div>
+                    <div class="chip" data-type="sans" onclick="moveChip(this)">Arial</div>
+                    <div class="chip" data-type="serif" onclick="moveChip(this)">Georgia</div>
+                    <div class="chip" data-type="sans" onclick="moveChip(this)">Helvetica</div>
+                </div>
+                <div class="categories-container">
+                    <div class="category-box" id="cat-serif" onclick="placeChip('cat-serif')">
+                        <h5>Зі зарубками (Serif)</h5>
+                    </div>
+                    <div class="category-box" id="cat-sans" onclick="placeChip('cat-sans')">
+                        <h5>Без зарубок (Sans-serif)</h5>
+                    </div>
+                </div>
+                <button class="next-btn" onclick="checkQ4('q5')">Готово ➔</button>
+                <div class="feedback" id="fb4"></div>
+            </div>
+
+            <!-- 2.2 -->
+            <div class="question-card" id="q5">
+                <div class="question-header">
+                    <span>2.2. Оберіть правильні терміни для заповнення пропусків:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <p style="font-size: 0.9rem; line-height: 1.8;">
+                    Малювання унікальних літер — це 
+                    <select class="fill-blank-select" id="blank1" onchange="autoCheckBlanks('q5', checkQ5, 'q6')">
+                        <option value="">...</option>
+                        <option value="1">Каліграфія</option>
+                        <option value="2">Леттеринг</option>
+                    </select>, а красиве письмо пером чи пензлем — це 
+                    <select class="fill-blank-select" id="blank2" onchange="autoCheckBlanks('q5', checkQ5, 'q6')">
+                        <option value="">...</option>
+                        <option value="1">Каліграфія</option>
+                        <option value="2">Леттеринг</option>
+                    </select>.
+                </p>
+                <div class="feedback" id="fb5"></div>
+            </div>
+
+            <!-- 2.3 -->
+            <div class="question-card" id="q6">
+                <div class="question-header">
+                    <span>2.3. Знайдіть ПОМИЛКОВЕ твердження щодо поєднання шрифтів:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="options-grid" style="grid-template-columns: 1fr;">
+                    <button class="option-btn" onclick="checkQ6(this, false, 'q7')">Використовувати не більше 2–3 шрифтів в одному макеті.</button>
+                    <button class="option-btn" onclick="checkQ6(this, false, 'q7')">Добре контрастують гарнітури із зарубками та без зарубок.</button>
+                    <button class="option-btn" onclick="checkQ6(this, true, 'q7')">Використовувати два дуже схожих декорованих шрифти одночасно.</button>
+                </div>
+                <div class="feedback" id="fb6"></div>
+            </div>
+        </div>
+
+        <!-- РОЗДІЛ 3 -->
+        <div class="section-card">
+            <div class="section-title">Розділ 3: Фірмовий стиль та тренди дизайну</div>
+            <div class="theory-box">
+                <b>Короткий огляд:</b> Фірмовий стиль містить логотип, брендбук, палітру та паковання. Тренди: Мінімалізм, Бруталізм та Neomorphism (м'які тіні).
+            </div>
+
+            <!-- 3.1 -->
+            <div class="question-card" id="q7">
+                <div class="question-header">
+                    <span>3.1. Зіставте елемент айдентики з його призначенням:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="match-row">
+                    <div class="match-label">Логотип</div>
+                    <select class="match-select" data-pair3="1" onchange="autoCheckMatch('q7', checkQ7, 'q8')">
+                        <option value="">-- Оберіть --</option>
+                        <option value="a">Головний ідентифікувальний графічний знак</option>
+                        <option value="b">Документ із правилами використання елементів</option>
+                    </select>
+                </div>
+                <div class="match-row">
+                    <div class="match-label">Брендбук</div>
+                    <select class="match-select" data-pair3="2" onchange="autoCheckMatch('q7', checkQ7, 'q8')">
+                        <option value="">-- Оберіть --</option>
+                        <option value="a">Головний ідентифікувальний графічний знак</option>
+                        <option value="b">Документ із правилами використання елементів</option>
+                    </select>
+                </div>
+                <div class="feedback" id="fb7"></div>
+            </div>
+
+            <!-- 3.2 -->
+            <div class="question-card" id="q8">
+                <div class="question-header">
+                    <span>3.2. Якому стилю притаманне створення ефекту м'якого об'єму за допомогою симетричних тіней?</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="options-grid">
+                    <button class="option-btn" onclick="checkQ8(this, false, 'q9')">Flat Design</button>
+                    <button class="option-btn" onclick="checkQ8(this, true, 'q9')">Neomorphism</button>
+                    <button class="option-btn" onclick="checkQ8(this, false, 'q9')">Бруталізм</option>
+                    <button class="option-btn" onclick="checkQ8(this, false, 'q9')">Вінтаж</option>
+                </div>
+                <div class="feedback" id="fb8"></div>
+            </div>
+
+            <!-- 3.3 -->
+            <div class="question-card" id="q9">
+                <div class="question-header">
+                    <span>3.3. Яка з характеристик описує якісний сучасний логотип?</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="options-grid" style="grid-template-columns: 1fr;">
+                    <button class="option-btn" onclick="checkQ9(this, false, 'q10')">Використання понад 10 дрібних деталей та градієнтів</button>
+                    <button class="option-btn" onclick="checkQ9(this, true, 'q10')">Простота, впізнаваність та масштабованість</button>
+                    <button class="option-btn" onclick="checkQ9(this, false, 'q10')">Обов'язкове використання фотографічних зображень</button>
+                </div>
+                <div class="feedback" id="fb9"></div>
+            </div>
+        </div>
+
+        <!-- РОЗДІЛ 4 -->
+        <div class="section-card">
+            <div class="section-title">Розділ 4: Реклама та психологія сприйняття</div>
+            <div class="theory-box">
+                <b>Короткий огляд:</b> Формула AIDA: Attention ➔ Interest ➔ Desire ➔ Action. Психологія кольорів: синій — надійність, зелений — спокій, червоний — динаміка.
+            </div>
+
+            <!-- 4.1 -->
+            <div class="question-card" id="q10">
+                <div class="question-header">
+                    <span>4.1. Встановіть послідовність етапів у моделі AIDA:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="seq-list" id="seq2">
+                    <div class="seq-item" data-id="1"><span>Attention (Увага)</span> <div class="seq-btns"><button onclick="moveSeq('seq2', this, -1)">▲</button><button onclick="moveSeq('seq2', this, 1)">▼</button></div></div>
+                    <div class="seq-item" data-id="2"><span>Interest (Інтерес)</span> <div class="seq-btns"><button onclick="moveSeq('seq2', this, -1)">▲</button><button onclick="moveSeq('seq2', this, 1)">▼</button></div></div>
+                    <div class="seq-item" data-id="3"><span>Desire (Бажання)</span> <div class="seq-btns"><button onclick="moveSeq('seq2', this, -1)">▲</button><button onclick="moveSeq('seq2', this, 1)">▼</button></div></div>
+                    <div class="seq-item" data-id="4"><span>Action (Дія)</span> <div class="seq-btns"><button onclick="moveSeq('seq2', this, -1)">▲</button><button onclick="moveSeq('seq2', this, 1)">▼</button></div></div>
+                </div>
+                <button class="next-btn" onclick="checkQ10('q11')">Готово ➔</button>
+                <div class="feedback" id="fb10"></div>
+            </div>
+
+            <!-- 4.2 -->
+            <div class="question-card" id="q11">
+                <div class="question-header">
+                    <span>4.2. Оберіть колір відповідно до психологічного впливу:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <p style="font-size: 0.9rem; line-height: 1.8;">
+                    Для підкреслення надійності банків найчастіше обирають 
+                    <select class="fill-blank-select" id="blankCol" onchange="autoCheckSelect('q11', checkQ11, 'q12')">
+                        <option value="">...</option>
+                        <option value="blue">Синій</option>
+                        <option value="red">Червоний</option>
+                        <option value="yellow">Жовтий</option>
+                    </select> колір.
+                </p>
+                <div class="feedback" id="fb11"></div>
+            </div>
+
+            <!-- 4.3 -->
+            <div class="question-card" id="q12">
+                <div class="question-header">
+                    <span>4.3. Знайдіть ПОМИЛКОВЕ твердження щодо ієрархії в баннері:</span>
+                    <span class="badge">1 бал</span>
+                </div>
+                <div class="options-grid" style="grid-template-columns: 1fr;">
+                    <button class="option-btn" onclick="checkQ12(this, false, null)">Головна думка робиться найбільшим кеглем.</button>
+                    <button class="option-btn" onclick="checkQ12(this, true, null)">Усі текстові блоки повинні мати однакову величину.</button>
+                    <button class="option-btn" onclick="checkQ12(this, false, null)">Кнопка заклику до дії (CTA) має бути контрастною.</button>
+                </div>
+                <div class="feedback" id="fb12"></div>
+            </div>
+        </div>
+
+        <div class="submit-section">
+            <button class="finish-btn" onclick="finishWorksheet()">Завершити роботу та отримати бал</button>
+        </div>
+    </div>
+
+    <script>
+        let scoreState = {
+            q1: { attempted: false, score: 0 },
+            q2: { attempted: false, score: 0 },
+            q3: { attempted: false, score: 0 },
+            q4: { attempted: false, score: 0 },
+            q5: { attempted: false, score: 0 },
+            q6: { attempted: false, score: 0 },
+            q7: { attempted: false, score: 0 },
+            q8: { attempted: false, score: 0 },
+            q9: { attempted: false, score: 0 },
+            q10: { attempted: false, score: 0 },
+            q11: { attempted: false, score: 0 },
+            q12: { attempted: false, score: 0 }
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            shuffleSeq('seq1');
+            shuffleSeq('seq2');
+        });
+
+        function scrollToNext(nextId) {
+            if (nextId) {
+                setTimeout(() => {
+                    const el = document.getElementById(nextId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 800);
+            }
+        }
+
+        function shuffleSeq(seqId) {
+            const container = document.getElementById(seqId);
+            for (let i = container.children.length; i > 0; i--) {
+                container.appendChild(container.children[Math.floor(Math.random() * i)]);
+            }
+        }
+
+        function moveSeq(seqId, btn, dir) {
+            const item = btn.closest('.seq-item');
+            if (dir === -1 && item.previousElementSibling) {
+                item.parentNode.insertBefore(item, item.previousElementSibling);
+            } else if (dir === 1 && item.nextElementSibling) {
+                item.parentNode.insertBefore(item.nextElementSibling, item);
+            }
+        }
+
+        let activeChip = null;
+        function moveChip(chip) {
+            if (activeChip) activeChip.classList.remove('selected');
+            activeChip = chip;
+            chip.classList.add('selected');
+        }
+
+        function placeChip(catId) {
+            if (activeChip) {
+                document.getElementById(catId).appendChild(activeChip);
+                activeChip.classList.remove('selected');
+                activeChip = null;
+            }
+        }
+
+        function autoCheckMatch(qKey, checkFn, nextId) {
+            const selects = document.querySelectorAll(`#${qKey} select`);
+            let allFilled = true;
+            selects.forEach(s => { if(!s.value) allFilled = false; });
+            if (allFilled) {
+                checkFn(nextId);
+            }
+        }
+
+        function autoCheckBlanks(qKey, checkFn, nextId) {
+            const b1 = document.getElementById('blank1').value;
+            const b2 = document.getElementById('blank2').value;
+            if (b1 && b2) {
+                checkFn(nextId);
+            }
+        }
+
+        function autoCheckSelect(qKey, checkFn, nextId) {
+            const val = document.getElementById('blankCol').value;
+            if (val) {
+                checkFn(nextId);
+            }
+        }
+
+        // Логіка перевірки питань
+
+        function checkQ1(nextId) {
+            const selects = document.querySelectorAll('#q1 select');
+            const answers = ['a', 'b', 'c'];
+            let correct = true;
+            selects.forEach((s, idx) => { if (s.value !== answers[idx]) correct = false; });
+
+            const fb = document.getElementById('fb1');
+            if (!scoreState.q1.attempted) {
+                scoreState.q1.attempted = true;
+                if (correct) scoreState.q1.score = 1;
+            }
+
+            fb.className = correct ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = correct ? 'Правильно!' : 'Є помилки.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ2(btn, isCorrect, nextId) {
+            const fb = document.getElementById('fb2');
+            if (!scoreState.q2.attempted) {
+                scoreState.q2.attempted = true;
+                if (isCorrect) scoreState.q2.score = 1;
+            }
+
+            fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = isCorrect ? 'Правильно! Це Pixel Art.' : 'Невірно.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ3(nextId) {
+            const items = document.querySelectorAll('#seq1 .seq-item');
+            let correct = true;
+            const targetOrder = ['1', '2', '3'];
+            items.forEach((item, idx) => { if (item.getAttribute('data-id') !== targetOrder[idx]) correct = false; });
+
+            const fb = document.getElementById('fb3');
+            if (!scoreState.q3.attempted) {
+                scoreState.q3.attempted = true;
+                if (correct) scoreState.q3.score = 1;
+            }
+
+            fb.className = correct ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = correct ? 'Вірно!' : 'Порядок невірний.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ4(nextId) {
+            const serifBox = document.querySelectorAll('#cat-serif .chip');
+            const sansBox = document.querySelectorAll('#cat-sans .chip');
+            let correct = true;
+
+            if (serifBox.length !== 2 || sansBox.length !== 2) correct = false;
+            serifBox.forEach(chip => { if (chip.getAttribute('data-type') !== 'serif') correct = false; });
+            sansBox.forEach(chip => { if (chip.getAttribute('data-type') !== 'sans') correct = false; });
+
+            const fb = document.getElementById('fb4');
+            if (!scoreState.q4.attempted) {
+                scoreState.q4.attempted = true;
+                if (correct) scoreState.q4.score = 1;
+            }
+
+            fb.className = correct ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = correct ? 'Чудово!' : 'Є помилки в сортуванні.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ5(nextId) {
+            const b1 = document.getElementById('blank1').value;
+            const b2 = document.getElementById('blank2').value;
+            let correct = (b1 === '2' && b2 === '1');
+
+            const fb = document.getElementById('fb5');
+            if (!scoreState.q5.attempted) {
+                scoreState.q5.attempted = true;
+                if (correct) scoreState.q5.score = 1;
+            }
+
+            fb.className = correct ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = correct ? 'Вірно!' : 'Невірно.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ6(btn, isCorrect, nextId) {
+            const fb = document.getElementById('fb6');
+            if (!scoreState.q6.attempted) {
+                scoreState.q6.attempted = true;
+                if (isCorrect) scoreState.q6.score = 1;
+            }
+
+            fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = isCorrect ? 'Вірно! Це помилкове твердження.' : 'Це правильне правило.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ7(nextId) {
+            const s1 = document.querySelector('[data-pair3="1"]').value;
+            const s2 = document.querySelector('[data-pair3="2"]').value;
+            let correct = (s1 === 'a' && s2 === 'b');
+
+            const fb = document.getElementById('fb7');
+            if (!scoreState.q7.attempted) {
+                scoreState.q7.attempted = true;
+                if (correct) scoreState.q7.score = 1;
+            }
+
+            fb.className = correct ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = correct ? 'Правильно!' : 'Помилка у зіставленні.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ8(btn, isCorrect, nextId) {
+            const fb = document.getElementById('fb8');
+            if (!scoreState.q8.attempted) {
+                scoreState.q8.attempted = true;
+                if (isCorrect) scoreState.q8.score = 1;
+            }
+
+            fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = isCorrect ? 'Вірно! Це неоморфізм.' : 'Невірно.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ9(btn, isCorrect, nextId) {
+            const fb = document.getElementById('fb9');
+            if (!scoreState.q9.attempted) {
+                scoreState.q9.attempted = true;
+                if (isCorrect) scoreState.q9.score = 1;
+            }
+
+            fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = isCorrect ? 'Вірно!' : 'Невірно.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ10(nextId) {
+            const items = document.querySelectorAll('#seq2 .seq-item');
+            let correct = true;
+            const targetOrder = ['1', '2', '3', '4'];
+            items.forEach((item, idx) => { if (item.getAttribute('data-id') !== targetOrder[idx]) correct = false; });
+
+            const fb = document.getElementById('fb10');
+            if (!scoreState.q10.attempted) {
+                scoreState.q10.attempted = true;
+                if (correct) scoreState.q10.score = 1;
+            }
+
+            fb.className = correct ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = correct ? 'Супер!' : 'Порядок невірний.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ11(nextId) {
+            const val = document.getElementById('blankCol').value;
+            let correct = (val === 'blue');
+
+            const fb = document.getElementById('fb11');
+            if (!scoreState.q11.attempted) {
+                scoreState.q11.attempted = true;
+                if (correct) scoreState.q11.score = 1;
+            }
+
+            fb.className = correct ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = correct ? 'Правильно!' : 'Невірно.';
+            scrollToNext(nextId);
+        }
+
+        function checkQ12(btn, isCorrect, nextId) {
+            const fb = document.getElementById('fb12');
+            if (!scoreState.q12.attempted) {
+                scoreState.q12.attempted = true;
+                if (isCorrect) scoreState.q12.score = 1;
+            }
+
+            fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+            fb.innerText = isCorrect ? 'Правильно!' : 'Невірно.';
+            scrollToNext(nextId);
+        }
+
+        // Завершення роботи та формування зашифрованого коду спроб
+        function finishWorksheet() {
+            const name = document.getElementById('student-name').value.trim();
+            if (!name) {
+                alert('Будь ласка, вкажіть ваше Прізвище та Ім\'я у верхній частині аркуша.');
+                return;
+            }
+
+            let currentScore = 0;
+            Object.keys(scoreState).forEach(q => {
+                currentScore += scoreState[q].score;
+            });
+
+            // Оновлення лічильника та історії спроб
+            let attemptsCount = parseInt(localStorage.getItem('design_ws_attempts') || '0') + 1;
+            let historyScores = JSON.parse(localStorage.getItem('design_ws_history') || '[]');
+            historyScores.push(currentScore);
+
+            localStorage.setItem('design_ws_attempts', attemptsCount.toString());
+            localStorage.setItem('design_ws_history', JSON.stringify(historyScores));
+
+            // Шифрування інформації про спроби для вчителя:
+            // T - Кількість спроб (Attempts)
+            // H - Історія балів через 'a' (Scores History)
+            const historyEncoded = historyScores.join('a');
+            const code = `Код верифікації: VERIFY-${currentScore}-T${attemptsCount}S${currentScore}H${historyEncoded}`;
+
+            document.getElementById('res-student-name').innerText = `Учень: ${name}`;
+            document.getElementById('res-score').innerText = `${currentScore} / 12`;
+            document.getElementById('res-code').innerText = code;
+            document.getElementById('result-screen').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
